@@ -40,7 +40,7 @@ pers_rect = pers.get_rect(center = (75,384)) #помещаем персонаж�
 comet_draw = pygame.image.load("comet.png").convert()
 comet_list = []
 spawn = pygame.USEREVENT
-pygame.time.set_timer(spawn,1000) #обновляем событие по времени каждую секунду
+pygame.time.set_timer(spawn,1500) #обновляем событие по времени каждую секунду
 comet_heiht = [100,200,400]
 
 while True: #игровой цикл
