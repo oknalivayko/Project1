@@ -1,4 +1,5 @@
 import pygame, sys
+def 
 pygame.init()
 screen = pygame.display.set_mode((432,768)) #ширина и высота экрана
 clock = pygame.time.Clock()
