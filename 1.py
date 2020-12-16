@@ -1,7 +1,7 @@
 import pygame, sys
 def moving(): #функция непрерывного(для игрока) движения черной дыры
-    screen.blit(black_hole,(x,600))
-    screen.blit(black_hole,(x+432,600))
+    screen.blit(black_hole,(x,700))
+    screen.blit(black_hole,(x+432,700))
 
 pygame.init()
 
