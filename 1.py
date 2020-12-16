@@ -1,6 +1,6 @@
 import pygame, sys
 pygame.init()
-screen = pygame.display.set_mode((288,512)) #ширина и высота экрана
+screen = pygame.display.set_mode((432,768)) #ширина и высота экрана
 clock = pygame.time.Clock()
 back = pygame.image.load("back.png").convert() #преобразует изобр в тип файла с которым легче работаь 
 black_hole = pygame.image.load("black_hole.png").convert()
@@ -10,6 +10,6 @@ while True: #игровой цикл
             pygame.quit()
             sys.exit()
     screen.blit(back,(0,0))
-    screen.blit(black_hole,(0,400))
+    screen.blit(black_hole,(0,600))
     pygame.display.update()
     clock.tick(120)
