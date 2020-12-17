@@ -20,18 +20,37 @@ def crash(comets): #функция столкновения с астероид�
     if pers_rect.top<=-100 or pers_rect.bottom>=700:
         return False
     return True
+def dis_score (game_pos): #вызовает отображение счета на экране
+    if game_pos == 'main_game':
+        score_surface = game_font.render(str(int(score)),True,(255,255,255)) #выбор цвета
+        score_rect = score_surface.get_rect(center = (210,150))
+        screen.blit(score_surface,score_rect)
+    if game_pos == 'game_over':
+        score_surface = game_font.render('Score: ' + str(int(score)),True,(255,255,255)) #выбор цвета
+        score_rect = score_surface.get_rect(center = (210,150))
+        screen.blit(score_surface,score_rect)
 
+        best_score_surface = game_font.render('Best score: ' + str(int(best_score)),True,(255,255,255)) #выбор цвета
+        best_score_rect = best_score_surface.get_rect(center = (210,600))
+        screen.blit(best_score_surface,best_score_rect)
+
+def score_update(score, best_score):
+    if score > best_score:
+        best_score = score
+    return best_score
 pygame.init()
 
 x = 0
 gravity = 0.125 #создаем гравитацию
 pers_movement = 0 #движение персонажа
 game = True #создаем переменную отвечающую за процесс игры, если она положительна - игра идет, если нет - конец игры
+score = 0 #счет
+best_score = 0 #лучший счет
 
 screen = pygame.display.set_mode((432,768)) #ширина и высота экрана
 
 clock = pygame.time.Clock()
-
+game_font = pygame.font.Font('MarkerFelt-Thin.ttf',50) #шрифт
 back = pygame.image.load("back.png").convert() #преобразует изобр в тип файла с которым легче работаь 
 black_hole = pygame.image.load("black_hole.png").convert()
 
@@ -57,6 +76,7 @@ while True: #игровой цикл
                 comet_list.clear() #очищаем весь список астероидов
                 pers_movement = 0 #возвращаем 0 движению персонажа
                 pers_rect.center = (75,384) #и возвращаем в исходную позицию
+                score = 0
         if event.type == pygame.USEREVENT:
             comet_list.append(create_comet())
             
@@ -72,6 +92,12 @@ while True: #игровой цикл
 
         comet_list = move_comets(comet_list)
         draw_comets(comet_list)
+        
+        score += 0.01
+        dis_score('main_game')
+    else:
+        best_score = score_update(score, best_score)
+        dis_score('game_over')
 
         crash(comet_list)
     x -= 1 
