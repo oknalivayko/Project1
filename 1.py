@@ -16,7 +16,7 @@ def move_comets(comets):
 
 def draw_comets(comets):
     for comet in comets:
-        p = pygame.transform.rotozoom(comet_draw,angle*3,1)
+        p = pygame.transform.rotozoom(comet_draw,-angle*3,1)
         screen.blit(p,comet)
 
 def crash(comets): #функция столкновения с астероидами и границами игры, возвращает ДА или НЕТ
@@ -49,6 +49,11 @@ def score_update(score, best_score):
 def pers_rotate(personage):
     p = pygame.transform.rotozoom(personage,pers_movement*3,1)
     return p
+
+def pers_animation():
+    new_pers = pers_massive[pers_index]
+    new_pers_rect = new_pers.get_rect(center = (75,pers_rect.centery))
+    return new_pers, new_pers_rect
 pygame.init()
 
 angle = 0
@@ -64,16 +69,28 @@ clock = pygame.time.Clock()
 game_font = pygame.font.Font('MarkerFelt-Thin.ttf',50) #шрифт
 back = pygame.image.load("back.png").convert() #преобразует изобр в тип файла с которым легче работаь 
 black_hole = pygame.image.load("black_hole.png").convert()
-pers = pygame.image.load("pers.png").convert_alpha()
-pers_rect = pers.get_rect(center = (75,384)) #помещаем персонажа в "прямоугольник" и располагаем в центре экрана
+
+pers_fire = pygame.image.load('pers_fire.png').convert_alpha()
+pers_n_fire = pygame.image.load('pers.png').convert_alpha()
+pers_massive = [pers_fire,pers_n_fire]
+pers_index = 0
+pers = pers_massive[pers_index]
+pers_rect = pers.get_rect(center = (75,384))
+
+#pers = pygame.image.load("pers.png").convert_alpha()
+#pers_rect = pers.get_rect(center = (75,384)) #помещаем персонажа в "прямоугольник" и располагаем в центре экрана
+
+
 tutorial = pygame.image.load('gameover.png').convert_alpha()
 tutorial = pygame.transform.scale2x(tutorial)
 tutorial_rect = tutorial.get_rect(center = (216,284))
 comet_draw = pygame.image.load("comet.png").convert_alpha()
 comet_list = []
+
 spawn = pygame.USEREVENT
 pygame.time.set_timer(spawn,1500) #обновляем событие по времени каждую секунду
 comet_heiht = [100,200,400]
+
 
 while True: #игровой цикл
     for event in pygame.event.get(): #ищет все события которые происходят прямо сейчас(движение мыш)
@@ -84,17 +101,21 @@ while True: #игровой цикл
             if event.key == pygame.K_SPACE and game == True: #если нажали кнопку space вначале игры
                 pers_movement = 0
                 pers_movement -= 5
+                if pers_index == 0:
+                    pers_index = 1
+                else:
+                    pers_index = 0
+                pers,pers_rect = pers_animation()
             if event.key == pygame.K_SPACE and game == False: #если нажали пробел когда проиграли
                 game = True #игра начинается заново
                 comet_list.clear() #очищаем весь список астероидов
                 pers_movement = 0 #возвращаем 0 движению персонажа
                 pers_rect.center = (75,384) #и возвращаем в исходную позицию
                 score = 0
-        if event.type == pygame.USEREVENT:
+        if event.type == spawn:
             comet_list.append(create_comet())
-            
-        
-
+    
+           
     screen.blit(back,(0,0))
     
     if game: #если игра идет то создаем персонажа и препяствия
