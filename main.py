@@ -83,7 +83,7 @@ def pers_animation():
     new_pers_rect = new_pers.get_rect(center = (75,pers_rect.centery)) #мы берем позицию y прошлого прямоугольника чтобы не менять положение когда мы обновляем прямоугольник
     return new_pers, new_pers_rect
 
-pygame.mixer.pre_init(frequency = 44100, size = 16, channels = 1, buffer = 256)
+pygame.mixer.pre_init(frequency = 44100, size = -16, channels = 1, buffer = 256)
 pygame.init() 
 
 angle = 0 #счетчик для вращения комет
