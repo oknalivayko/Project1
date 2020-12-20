@@ -50,15 +50,15 @@ def dis_score (game_pos):
     отображает счетчик. Если игра окончена, то отображает 
     полученный счет и лучший счет"""
     if game_pos == 'main_game':
-        score_surface = game_font.render(str(int(score)),True,(237, 28, 36)) #выбор цвета
+        score_surface = game_font.render(str(int(score)),True,(166, 13, 20)) #выбор цвета
         score_rect = score_surface.get_rect(center = (210,150))
         screen.blit(score_surface,score_rect)
     if game_pos == 'game_over':
-        score_surface = game_font.render('Score: ' + str(int(score)),True,(237, 28, 36)) #выбор цвета
+        score_surface = game_font.render('Score: ' + str(int(score)),True,(166, 13, 20)) #выбор цвета
         score_rect = score_surface.get_rect(center = (210,150))
         screen.blit(score_surface,score_rect)
 
-        best_score_surface = game_font.render('Best score: ' + str(int(best_score)),True,(237, 28, 36)) #выбор цвета
+        best_score_surface = game_font.render('Best score: ' + str(int(best_score)),True,(166, 13, 20)) #выбор цвета
         best_score_rect = best_score_surface.get_rect(center = (210,600))
         screen.blit(best_score_surface,best_score_rect)
 
@@ -110,8 +110,8 @@ spawn = pygame.USEREVENT #создаем событие, которое буде
 pygame.time.set_timer(spawn,1500) #обновляем событие по времени каждые 1500 мс
 asteroid_heiht = [100,200,400] #список с высотой на которой будут создаваться астероиды
 star = pygame.image.load('star.png').convert_alpha()
-starx = [0,50,100,150,200,250,300,350,400,450,500]
-stary = [0,50,100,150,200,250,300,350,400,450,500]
+starx = [0,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750]
+stary = [0,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750]
 while True: #Игровой цикл
     for event in pygame.event.get(): 
         #Поиск событий которые происходят прямо сейчас (движение мышью)
