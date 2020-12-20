@@ -75,6 +75,7 @@ def pers_animation():
     new_pers_rect = new_pers.get_rect(center = (75,pers_rect.centery))
     return new_pers, new_pers_rect
 
+#pygame.mixer.pre_init(frequency = 44100, size = 16, channels = 1, buffer = 256)
 pygame.init() 
 
 angle = 0
@@ -111,6 +112,7 @@ spawn = pygame.USEREVENT
 pygame.time.set_timer(spawn,1500) #обновляем событие по времени каждую секунду
 comet_heiht = [100,200,400]
 
+score_sound = pygame.mixer.Sound('score.wav')
 
 while True: #Игровой цикл
     for event in pygame.event.get(): 
@@ -151,6 +153,7 @@ while True: #Игровой цикл
         draw_comets(comet_list)
         
         score += 0.005
+        score_sound.play()
         dis_score('main_game')
     else:
         best_score = score_update(score, best_score)
