@@ -6,6 +6,12 @@ def moving():
     screen.blit(floor,(x,700)) #blict берет фоновую поверхность и рисует ее на экране и размещает в точке (x, y)
     screen.blit(floor,(x+432,700)) #рисует такую же картинку рядом
 
+def star_moving():
+    """Функция которая рисует на экран звезды(рябь). Не принимает аргументов """
+    randomstarx = random.choice(starx)
+    randomstary = random.choice(stary)
+    screen.blit(star,(randomstarx,randomstary))
+
 def create_asteroid():
     """Функция для создания объектов столкновения (кометы). Создает
     объекты в любом месте на экране, возвращает комету"""
@@ -44,15 +50,15 @@ def dis_score (game_pos):
     отображает счетчик. Если игра окончена, то отображает 
     полученный счет и лучший счет"""
     if game_pos == 'main_game':
-        score_surface = game_font.render(str(int(score)),True,(255,255,255)) #выбор цвета
+        score_surface = game_font.render(str(int(score)),True,(237, 28, 36)) #выбор цвета
         score_rect = score_surface.get_rect(center = (210,150))
         screen.blit(score_surface,score_rect)
     if game_pos == 'game_over':
-        score_surface = game_font.render('Score: ' + str(int(score)),True,(255,255,255)) #выбор цвета
+        score_surface = game_font.render('Score: ' + str(int(score)),True,(237, 28, 36)) #выбор цвета
         score_rect = score_surface.get_rect(center = (210,150))
         screen.blit(score_surface,score_rect)
 
-        best_score_surface = game_font.render('Best score: ' + str(int(best_score)),True,(255,255,255)) #выбор цвета
+        best_score_surface = game_font.render('Best score: ' + str(int(best_score)),True,(237, 28, 36)) #выбор цвета
         best_score_rect = best_score_surface.get_rect(center = (210,600))
         screen.blit(best_score_surface,best_score_rect)
 
@@ -84,15 +90,10 @@ pers_movement = 0 #движение персонажа
 game = True #создаем переменную отвечающую за процесс игры, если она положительна - игра идет, если нет - конец игры
 score = 0 #счет
 best_score = 0 #лучший счет
-
 screen = pygame.display.set_mode((432,768)) #Cоздание поверхности изображения, принимает длину и ширину экрана
-
 clock = pygame.time.Clock() #Создание объекта для отслеживания игрового времени
-
 game_font = pygame.font.Font('MarkerFelt-Thin.ttf',50) #Создание нового объекта Font (шрифт) из файла. Принимает имя файла, размер шрифта
-
 back = pygame.image.load("back.png").convert() #Загружает изображение из файла. Принимает имя файла или файловый объект python
-
 floor = pygame.image.load("floor.png").convert()
 pers_fire = pygame.image.load('pers_fire.png').convert_alpha()
 pers_n_fire = pygame.image.load('pers.png').convert_alpha()
@@ -108,8 +109,9 @@ asteroid_list = [] #создаем список в который мы буде�
 spawn = pygame.USEREVENT #создаем событие, которое будет вызываться по таймеру
 pygame.time.set_timer(spawn,1500) #обновляем событие по времени каждые 1500 мс
 asteroid_heiht = [100,200,400] #список с высотой на которой будут создаваться астероиды
-
-
+star = pygame.image.load('star.png').convert_alpha()
+starx = [0,50,100,150,200,250,300,350,400,450,500]
+stary = [0,50,100,150,200,250,300,350,400,450,500]
 while True: #Игровой цикл
     for event in pygame.event.get(): 
         #Поиск событий которые происходят прямо сейчас (движение мышью)
@@ -133,29 +135,25 @@ while True: #Игровой цикл
                 score = 0
         if event.type == spawn:
             asteroid_list.append(create_asteroid()) #добавляем в список кометы с помощью функции
-    
-           
+             
     screen.blit(back,(0,0))
     
     if game: #если игра идет то создаем персонажа и препяствия
-        
         angle+=1
         pers_movement += gravity
         pers_rect.centery += pers_movement #перемещаем центр "прямоугольника" вместе с персом по оси y 
         pers_rotated = pers_rotate(pers)
         screen.blit(pers_rotated,pers_rect) 
         game = crash(asteroid_list)
-
         asteroid_list = move_asteroids(asteroid_list)
         draw_asteroids(asteroid_list)
-        
         score += 0.005
         dis_score('main_game')
+        star_moving() 
     else:
         best_score = score_update(score, best_score)
         dis_score('game_over')
-        screen.blit(tutorial,tutorial_rect)
-        
+        screen.blit(tutorial,tutorial_rect)   
     x -= 1
     moving()
     if x <= -432:
