@@ -42,6 +42,7 @@ def crash(asteroids):
             death_sound.play()
             return False
     if pers_rect.top<=-100 or pers_rect.bottom>=700: #если игрок вылетел за пределы экрана
+        death_sound.play()
         return False
     return True
 
@@ -114,7 +115,7 @@ pygame.time.set_timer(spawn,1500) #обновляем событие по вре
 comet_heiht = [100,200,400]
 
 score_sound = pygame.mixer.Sound('score.wav')
-#theme_sound = pygame.mixer.Sound('theme.wav')
+theme_sound = pygame.mixer.Sound('theme.wav')
 death_sound = pygame.mixer.Sound('death.wav')
 score_sound_x = 200
 
