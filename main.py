@@ -39,6 +39,7 @@ def crash(asteroids):
     принимает список комет, возвращает ДА или НЕТ"""
     for asteroid in asteroids:
         if pers_rect.colliderect(asteroid):   #если есть столкновение с астероидом
+            death_sound.play()
             return False
     if pers_rect.top<=-100 or pers_rect.bottom>=700: #если игрок вылетел за пределы экрана
         return False
@@ -81,7 +82,7 @@ def pers_animation():
     new_pers_rect = new_pers.get_rect(center = (75,pers_rect.centery)) #мы берем позицию y прошлого прямоугольника чтобы не менять положение когда мы обновляем прямоугольник
     return new_pers, new_pers_rect
 
-#pygame.mixer.pre_init(frequency = 44100, size = 16, channels = 1, buffer = 256)
+pygame.mixer.pre_init(frequency = 44100, size = 16, channels = 1, buffer = 256)
 pygame.init() 
 
 angle = 0 #счетчик для вращения комет
@@ -112,7 +113,10 @@ spawn = pygame.USEREVENT
 pygame.time.set_timer(spawn,1500) #обновляем событие по времени каждую секунду
 comet_heiht = [100,200,400]
 
-#score_sound = pygame.mixer.Sound('score.wav')
+score_sound = pygame.mixer.Sound('score.wav')
+#theme_sound = pygame.mixer.Sound('theme.wav')
+death_sound = pygame.mixer.Sound('death.wav')
+score_sound_x = 200
 
 asteroid_draw = pygame.image.load("asteroid.png").convert_alpha()
 asteroid_list = [] #создаем список в который мы будем добавлять "прямоугольники" с астероидами
@@ -123,8 +127,7 @@ star = pygame.image.load('star.png').convert_alpha()
 starx = [0,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750]
 stary = [0,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750]
 while True: #Игровой цикл
-    for event in pygame.event.get(): 
-        #Поиск событий которые происходят прямо сейчас (движение мышью)
+    for event in pygame.event.get(): #Поиск событий которые происходят прямо сейчас (движение мышью)
         if event.type == pygame.QUIT: #выход из игры
             pygame.quit()
             sys.exit() #говорит интерпретатору остановить выполнение программы
@@ -158,7 +161,10 @@ while True: #Игровой цикл
         asteroid_list = move_asteroids(asteroid_list)
         draw_asteroids(asteroid_list)
         score += 0.005
-        #score_sound.play()
+        score_sound_x -= 1
+        if score_sound_x <= 0:
+            score_sound.play()
+            score_sound_x = 200
         dis_score('main_game')
         star_moving() 
     else:
