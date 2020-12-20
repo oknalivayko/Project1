@@ -73,7 +73,7 @@ def score_update(score, best_score):
 
 def pers_rotate(personage):
     """Функция для вращения объекта. Принимает объект 
-    персонажа, возвращает персонажа""" 
+    персонажа, возвращает вращающегося персонажа""" 
     p = pygame.transform.rotozoom(personage,pers_movement*3,1)
     return p
 
