@@ -1,15 +1,18 @@
-import pygame, sys, random
+import pygame, sys, random 
 
-def moving(): #функция непрерывного(для игрока) движения черной дыры
+def moving(): 
+    """Метод непрерывного (для игрока) движения нижней поверхности (пола). Не принимает аргументов"""
     screen.blit(black_hole,(x,700))
     screen.blit(black_hole,(x+432,700))
 
 def create_comet():
+    """Метод для создания объектов столкновения (кометы)"""
     random_comet_pos = random.choice(comet_heiht)
     new_comet = comet_draw.get_rect(center=(700,random_comet_pos))
     return new_comet
 
 def move_comets(comets):
+    """ Метод для перемещения комет. Функция принимает список комет, затем перебирает каждый объект, перемещая на некоторое расстояние влево, возвращает новый список комет"""
     for comet in comets:
         comet.centerx -= 5 
     return(comets)
@@ -19,7 +22,8 @@ def draw_comets(comets):
         p = pygame.transform.rotozoom(comet_draw,-angle*3,1)
         screen.blit(p,comet)
 
-def crash(comets): #функция столкновения с астероидами и границами игры, возвращает ДА или НЕТ
+def crash(comets): 
+    """Функция для столкновения с астероидами и границами игры, принимает  возвращает ДА или НЕТ"""
     for comet in comets:
         if pers_rect.colliderect(comet):
             return False
@@ -54,22 +58,30 @@ def pers_animation():
     new_pers = pers_massive[pers_index]
     new_pers_rect = new_pers.get_rect(center = (75,pers_rect.centery))
     return new_pers, new_pers_rect
-pygame.init()
+
+pygame.init() 
 
 angle = 0
-x = 0
+x = 0 # позиция для пола
 gravity = 0.125 #создаем гравитацию
 pers_movement = 0 #движение персонажа
 game = True #создаем переменную отвечающую за процесс игры, если она положительна - игра идет, если нет - конец игры
 score = 0 #счет
 best_score = 0 #лучший счет
 
-screen = pygame.display.set_mode((432,768)) #ширина и высота экрана
-clock = pygame.time.Clock()
-game_font = pygame.font.Font('MarkerFelt-Thin.ttf',50) #шрифт
-back = pygame.image.load("back.png").convert() #преобразует изобр в тип файла с которым легче работаь 
-black_hole = pygame.image.load("black_hole.png").convert()
+screen = pygame.display.set_mode((432,768)) 
+"""Cоздание поверхности изображения, принимает длину и ширину экрана"""
 
+clock = pygame.time.Clock()
+"""Создание объекта для отслеживания игрового времени"""
+
+game_font = pygame.font.Font('MarkerFelt-Thin.ttf',50) 
+"""Создание нового объекта Font (шрифт) из файла. Принимает имя файла, размер шрифта"""
+
+back = pygame.image.load("back.png").convert() 
+"""Загружает изображение из файла. Принимает имя файла или файловый объект python"""
+
+black_hole = pygame.image.load("black_hole.png").convert()
 pers_fire = pygame.image.load('pers_fire.png').convert_alpha()
 pers_n_fire = pygame.image.load('pers.png').convert_alpha()
 pers_massive = [pers_fire,pers_n_fire]
@@ -92,8 +104,9 @@ pygame.time.set_timer(spawn,1500) #обновляем событие по вре
 comet_heiht = [100,200,400]
 
 
-while True: #игровой цикл
-    for event in pygame.event.get(): #ищет все события которые происходят прямо сейчас(движение мыш)
+while True: #Игровой цикл
+    for event in pygame.event.get(): 
+        """Поиск событий которые происходят прямо сейчас(движение мышью)"""
         if event.type == pygame.QUIT: #выход из игры
             pygame.quit()
             sys.exit()
@@ -142,4 +155,6 @@ while True: #игровой цикл
         x = 0 #обнуляем x когда он дойдет до конца экрана
 
     pygame.display.update()
-    clock.tick(120)
+    """Обновление части экрана. В данном случае обновляет весь дисплей,т.к не передаем никакие аргументы"""
+    clock.tick(120) 
+    """Принимает количество кадров в секунду, т.е как быстро будет выполнять цикл"""
