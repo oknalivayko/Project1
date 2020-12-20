@@ -3,38 +3,38 @@ import pygame, sys, random
 def moving(): 
     """Функция непрерывного (для игрока) движения нижней
     поверхности (пола). Не принимает аргументов"""
-    screen.blit(black_hole,(x,700))
-    screen.blit(black_hole,(x+432,700))
+    screen.blit(floor,(x,700)) #blict берет фоновую поверхность и рисует ее на экране и размещает в точке (x, y)
+    screen.blit(floor,(x+432,700)) #рисует такую же картинку рядом
 
-def create_comet():
+def create_asteroid():
     """Функция для создания объектов столкновения (кометы). Создает
     объекты в любом месте на экране, возвращает комету"""
-    random_comet_pos = random.choice(comet_heiht)
-    new_comet = comet_draw.get_rect(center=(700,random_comet_pos))
-    return new_comet
+    random_asteroid_pos = random.choice(asteroid_heiht) #случайно определяет позицию y из созданного списка
+    new_asteroid = asteroid_draw.get_rect(center=(700,random_asteroid_pos)) #позиция x=700 чтобы игрок не видел как астероид резко появляется на глазах
+    return new_asteroid
 
-def move_comets(comets):
+def move_asteroids(asteroids):
     """ Функция для перемещения комет. Функция принимает список 
     комет, затем перебирает каждый объект, перемещая на 
     некоторое расстояние влево, возвращает новый список комет"""
-    for comet in comets:
-        comet.centerx -= 5 
-    return(comets)
+    for asteroid in asteroids:
+        asteroid.centerx -= 5 
+    return(asteroids)
 
-def draw_comets(comets):
+def draw_asteroids(asteroids):
     """Функция для отображения комет на экране. 
     Принимает список комет."""
-    for comet in comets:
-        p = pygame.transform.rotozoom(comet_draw,-angle*3,1)
-        screen.blit(p,comet)
+    for asteroid in asteroids:
+        p = pygame.transform.rotozoom(asteroid_draw,-angle*3,1)
+        screen.blit(p,asteroid)
 
-def crash(comets): 
+def crash(asteroids): 
     """Функция для столкновения с астероидами и границами игры, 
     принимает список комет, возвращает ДА или НЕТ"""
-    for comet in comets:
-        if pers_rect.colliderect(comet):
+    for asteroid in asteroids:
+        if pers_rect.colliderect(asteroid):   #если есть столкновение с астероидом
             return False
-    if pers_rect.top<=-100 or pers_rect.bottom>=700:
+    if pers_rect.top<=-100 or pers_rect.bottom>=700: #если игрок вылетел за пределы экрана
         return False
     return True
 
@@ -72,12 +72,12 @@ def pers_rotate(personage):
 def pers_animation():
     """Функция для создания анимации персонажа"""
     new_pers = pers_massive[pers_index]
-    new_pers_rect = new_pers.get_rect(center = (75,pers_rect.centery))
+    new_pers_rect = new_pers.get_rect(center = (75,pers_rect.centery)) #мы берем позицию y прошлого прямоугольника чтобы не менять положение когда мы обновляем прямоугольник
     return new_pers, new_pers_rect
 
 pygame.init() 
 
-angle = 0
+angle = 0 #счетчик для вращения комет
 x = 0 # позиция для пола
 gravity = 0.125 #создаем гравитацию
 pers_movement = 0 #движение персонажа
@@ -93,31 +93,29 @@ game_font = pygame.font.Font('MarkerFelt-Thin.ttf',50) #Создание нов�
 
 back = pygame.image.load("back.png").convert() #Загружает изображение из файла. Принимает имя файла или файловый объект python
 
-black_hole = pygame.image.load("black_hole.png").convert()
+floor = pygame.image.load("floor.png").convert()
 pers_fire = pygame.image.load('pers_fire.png').convert_alpha()
 pers_n_fire = pygame.image.load('pers.png').convert_alpha()
-pers_massive = [pers_fire,pers_n_fire]
-pers_index = 0
-pers = pers_massive[pers_index]
+pers_massive = [pers_fire,pers_n_fire] #создаем массив из двух элементов - положений персонажа
+pers_index = 0 # индекс для массива, который будет принимать значение 0 или 1
+pers = pers_massive[pers_index] 
 pers_rect = pers.get_rect(center = (75,384))
-
 tutorial = pygame.image.load('gameover.png').convert_alpha()
 tutorial = pygame.transform.scale2x(tutorial)
 tutorial_rect = tutorial.get_rect(center = (216,284))
-comet_draw = pygame.image.load("comet.png").convert_alpha()
-comet_list = []
-
-spawn = pygame.USEREVENT
-pygame.time.set_timer(spawn,1500) #обновляем событие по времени каждую секунду
-comet_heiht = [100,200,400]
+asteroid_draw = pygame.image.load("asteroid.png").convert_alpha()
+asteroid_list = [] #создаем список в который мы будем добавлять "прямоугольники" с астероидами
+spawn = pygame.USEREVENT #создаем событие, которое будет вызываться по таймеру
+pygame.time.set_timer(spawn,1500) #обновляем событие по времени каждые 1500 мс
+asteroid_heiht = [100,200,400] #список с высотой на которой будут создаваться астероиды
 
 
 while True: #Игровой цикл
     for event in pygame.event.get(): 
-        """Поиск событий которые происходят прямо сейчас (движение мышью)"""
+        #Поиск событий которые происходят прямо сейчас (движение мышью)
         if event.type == pygame.QUIT: #выход из игры
             pygame.quit()
-            sys.exit()
+            sys.exit() #говорит интерпретатору остановить выполнение программы
         if event.type == pygame.KEYDOWN: #проверяет была ли нажата кнопка на клавиатуре
             if event.key == pygame.K_SPACE and game == True: #если нажали кнопку space вначале игры
                 pers_movement = 0
@@ -129,26 +127,27 @@ while True: #Игровой цикл
                 pers,pers_rect = pers_animation()
             if event.key == pygame.K_SPACE and game == False: #если нажали пробел когда проиграли
                 game = True #игра начинается заново
-                comet_list.clear() #очищаем весь список астероидов
+                asteroid_list.clear() #очищаем весь список астероидов
                 pers_movement = 0 #возвращаем 0 движению персонажа
                 pers_rect.center = (75,384) #и возвращаем в исходную позицию
                 score = 0
         if event.type == spawn:
-            comet_list.append(create_comet())
+            asteroid_list.append(create_asteroid()) #добавляем в список кометы с помощью функции
     
            
     screen.blit(back,(0,0))
     
     if game: #если игра идет то создаем персонажа и препяствия
+        
         angle+=1
         pers_movement += gravity
-        pers_rect.centery += pers_movement #перемещаем центр "прямоугольника" вместе с персом
+        pers_rect.centery += pers_movement #перемещаем центр "прямоугольника" вместе с персом по оси y 
         pers_rotated = pers_rotate(pers)
-        screen.blit(pers_rotated,pers_rect)
-        game = crash(comet_list)
+        screen.blit(pers_rotated,pers_rect) 
+        game = crash(asteroid_list)
 
-        comet_list = move_comets(comet_list)
-        draw_comets(comet_list)
+        asteroid_list = move_asteroids(asteroid_list)
+        draw_asteroids(asteroid_list)
         
         score += 0.005
         dis_score('main_game')
@@ -156,8 +155,8 @@ while True: #Игровой цикл
         best_score = score_update(score, best_score)
         dis_score('game_over')
         screen.blit(tutorial,tutorial_rect)
-        crash(comet_list)
-    x -= 1 
+        
+    x -= 1
     moving()
     if x <= -432:
         x = 0 #обнуляем x когда он дойдет до конца экрана
