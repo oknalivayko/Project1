@@ -170,6 +170,7 @@ while True: #Игровой цикл
         star_moving() 
     else:
         best_score = score_update(score, best_score)
+        score_sound_x = 200
         dis_score('game_over')
         screen.blit(tutorial,tutorial_rect)   
     x -= 1
