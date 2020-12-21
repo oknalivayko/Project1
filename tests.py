@@ -23,9 +23,18 @@ class Test_Among (unittest.TestCase):
         asteroid_list = [asteroid_draw.get_rect(center=(0,0)),asteroid_draw.get_rect(center=(3,100))]
         self.assertEqual (move_asteroids(asteroid_list), [asteroid_draw.get_rect(center=(-5,0)),asteroid_draw.get_rect(center=(-2,100))])
 
-    #def test_3(self):
-        #asteroid_draw = pygame.image.load("asteroid.png").convert_alpha()
-        #asteroid_list = []
+    def test_3(self):
+        asteroid_draw = pygame.image.load("asteroid.png").convert_alpha()
+        pers = pygame.image.load('pers.png').convert_alpha()
+        asteroid_list = []
+        asteroid_list.append(asteroid_draw.get_rect(center=(700,500)))
+        pers_rect = pers.get_rect(center = (75,384))
+        self.assertEqual (crash(asteroid_list), (True))
+        asteroid_list.append(asteroid_draw.get_rect(center=(75,384)))
+        self.assertEqual (crash(asteroid_list), (False))
+        asteroid_list.append(asteroid_draw.get_rect(center=(100,0)))
+        self.assertEqual (crash(asteroid_list), (False))
+        
         
 
 
