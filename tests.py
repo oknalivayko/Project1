@@ -6,6 +6,9 @@ class Test_Among (unittest.TestCase):
     def test_1(self):
         self.assertEqual (score_update(2,3), (3))
         self.assertEqual (score_update(4,3), (4))
+        self.assertEqual (score_update(6,5), (6))
+        self.assertEqual (score_update(4456,3), (4456))
+        self.assertEqual (score_update(78,56), (78))
 
     def test_2(self):
         asteroid_draw = pygame.image.load("asteroid.png").convert_alpha()
