@@ -107,12 +107,12 @@ pers_rect = pers.get_rect(center = (75,384))
 tutorial = pygame.image.load('gameover.png').convert_alpha()
 tutorial = pygame.transform.scale2x(tutorial)
 tutorial_rect = tutorial.get_rect(center = (216,284))
-comet_draw = pygame.image.load("asteroid.png").convert_alpha()
-comet_list = []
+asteroid_draw = pygame.image.load("asteroid.png").convert_alpha()
+asteroid_list = []
 
 spawn = pygame.USEREVENT
 pygame.time.set_timer(spawn,1500) #обновляем событие по времени каждую секунду
-comet_heiht = [100,200,400]
+asteroid_heiht = [100,200,400]
 
 score_sound = pygame.mixer.Sound('score.wav')
 theme_sound = pygame.mixer.Sound('theme.wav')
