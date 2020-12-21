@@ -1,5 +1,14 @@
 import pygame, sys, random 
 
+def init_and_check_for_errors():
+    """Функция для инициализации и
+    проверки как запустится pygame"""
+    check_errors = pygame.init()
+    if check_errors[1] > 0:
+        sys.exit()
+    else:
+        print('ok')
+
 def moving(): 
     """Функция непрерывного (для игрока) движения нижней
     поверхности (пола). Не принимает аргументов"""
@@ -83,6 +92,7 @@ def pers_animation():
     new_pers_rect = new_pers.get_rect(center = (75,pers_rect.centery)) #мы берем позицию y прошлого прямоугольника чтобы не менять положение когда мы обновляем прямоугольник
     return new_pers, new_pers_rect
 
+init_and_check_for_errors()
 pygame.mixer.pre_init(frequency = 44100, size = -16, channels = 1, buffer = 256)
 pygame.init() 
 

@@ -1,6 +1,7 @@
 import unittest,pygame
 from main import score_update
 from main import move_asteroids
+from main import crash
 class Test_Among (unittest.TestCase):
 
     def test_1(self):
@@ -21,3 +22,10 @@ class Test_Among (unittest.TestCase):
         self.assertEqual (move_asteroids(asteroid_list),[])
         asteroid_list = [asteroid_draw.get_rect(center=(0,0)),asteroid_draw.get_rect(center=(3,100))]
         self.assertEqual (move_asteroids(asteroid_list), [asteroid_draw.get_rect(center=(-5,0)),asteroid_draw.get_rect(center=(-2,100))])
+
+    #def test_3(self):
+        #asteroid_draw = pygame.image.load("asteroid.png").convert_alpha()
+        #asteroid_list = []
+        
+
+
