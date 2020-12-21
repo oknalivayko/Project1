@@ -1,5 +1,14 @@
 import pygame, sys, random 
 
+def init_and_check_for_errors():
+    """Функция для инициализации и
+    проверки как запустится pygame"""     
+    errors = pygame.init()
+    if errors[1] > 0:           
+         sys.exit()       
+    else:
+         print('Ok')
+
 def moving(): 
     """Функция непрерывного (для игрока) движения нижней
     поверхности (пола). Не принимает аргументов"""
@@ -51,7 +60,7 @@ def dis_score (game_pos):
     "позицию" игры. Если игра в активной позиции, то функция
     отображает счетчик. Если игра окончена, то отображает 
     полученный счет и лучший счет"""
-    if game_pos == 'main_game':
+    if game_pos == 'main_game': 
         score_surface = game_font.render(str(int(score)),True,(166, 13, 20)) #выбор цвета
         score_rect = score_surface.get_rect(center = (210,150))
         screen.blit(score_surface,score_rect)
@@ -127,6 +136,7 @@ asteroid_heiht = [100,200,400] #список с высотой на которо
 star = pygame.image.load('star.png').convert_alpha()
 starx = [0,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750]
 stary = [0,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750]
+init_and_check_for_errors()
 while True: #Игровой цикл
     for event in pygame.event.get(): #Поиск событий которые происходят прямо сейчас (движение мышью)
         if event.type == pygame.QUIT: #выход из игры
