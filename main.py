@@ -1,14 +1,5 @@
 import pygame, sys, random 
 
-def init_and_check_for_errors():
-    """Функция для инициализации и
-    проверки как запустится pygame"""     
-    errors = pygame.init()
-    if errors[1] > 0:           
-         sys.exit()       
-    else:
-         print('Ok')
-
 def moving(): 
     """Функция непрерывного (для игрока) движения нижней
     поверхности (пола). Не принимает аргументов"""
@@ -136,57 +127,58 @@ asteroid_heiht = [100,200,400] #список с высотой на которо
 star = pygame.image.load('star.png').convert_alpha()
 starx = [0,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750]
 stary = [0,50,100,150,200,250,300,350,400,450,500,550,600,650,700,750]
-init_and_check_for_errors()
-while True: #Игровой цикл
-    for event in pygame.event.get(): #Поиск событий которые происходят прямо сейчас (движение мышью)
-        if event.type == pygame.QUIT: #выход из игры
-            pygame.quit()
-            sys.exit() #говорит интерпретатору остановить выполнение программы
-        if event.type == pygame.KEYDOWN: #проверяет была ли нажата кнопка на клавиатуре
-            if event.key == pygame.K_SPACE and game == True: #если нажали кнопку space вначале игры
-                pers_movement = 0
-                pers_movement -= 5
-                if pers_index == 0:
-                    pers_index = 1
-                else:
-                    pers_index = 0
-                pers,pers_rect = pers_animation()
-            if event.key == pygame.K_SPACE and game == False: #если нажали пробел когда проиграли
-                game = True #игра начинается заново
-                asteroid_list.clear() #очищаем весь список астероидов
-                pers_movement = 0 #возвращаем 0 движению персонажа
-                pers_rect.center = (75,384) #и возвращаем в исходную позицию
-                score = 0
-        if event.type == spawn:
-            asteroid_list.append(create_asteroid()) #добавляем в список кометы с помощью функции
-             
-    screen.blit(back,(0,0))
-    
-    if game: #если игра идет то создаем персонажа и препяствия
-        angle+=1
-        pers_movement += gravity
-        pers_rect.centery += pers_movement #перемещаем центр "прямоугольника" вместе с персом по оси y 
-        pers_rotated = pers_rotate(pers)
-        screen.blit(pers_rotated,pers_rect) 
-        game = crash(asteroid_list)
-        asteroid_list = move_asteroids(asteroid_list)
-        draw_asteroids(asteroid_list)
-        score += 0.005
-        score_sound_x -= 1
-        if score_sound_x <= 0:
-            score_sound.play()
-            score_sound_x = 200
-        dis_score('main_game')
-        star_moving() 
-    else:
-        best_score = score_update(score, best_score)
-        score_sound_x = 200
-        dis_score('game_over')
-        screen.blit(tutorial,tutorial_rect)   
-    x -= 1
-    moving()
-    if x <= -432:
-        x = 0 #обнуляем x когда он дойдет до конца экрана
 
-    pygame.display.update() #Обновление части экрана. В данном случае обновляет весь дисплей,т.к не передаем никакие аргументы
-    clock.tick(120) #Принимает количество кадров в секунду, т.е как быстро будет выполнять цикл
+if __name__ == '__main__':
+    while True: #Игровой цикл
+        for event in pygame.event.get(): #Поиск событий которые происходят прямо сейчас (движение мышью)
+            if event.type == pygame.QUIT: #выход из игры
+                pygame.quit()
+                sys.exit() #говорит интерпретатору остановить выполнение программы
+            if event.type == pygame.KEYDOWN: #проверяет была ли нажата кнопка на клавиатуре
+                if event.key == pygame.K_SPACE and game == True: #если нажали кнопку space вначале игры
+                    pers_movement = 0
+                    pers_movement -= 5
+                    if pers_index == 0:
+                        pers_index = 1
+                    else:
+                        pers_index = 0
+                    pers,pers_rect = pers_animation()
+                if event.key == pygame.K_SPACE and game == False: #если нажали пробел когда проиграли
+                    game = True #игра начинается заново
+                    asteroid_list.clear() #очищаем весь список астероидов
+                    pers_movement = 0 #возвращаем 0 движению персонажа
+                    pers_rect.center = (75,384) #и возвращаем в исходную позицию
+                    score = 0
+            if event.type == spawn:
+                asteroid_list.append(create_asteroid()) #добавляем в список кометы с помощью функции
+                
+        screen.blit(back,(0,0))
+        
+        if game: #если игра идет то создаем персонажа и препяствия
+            angle+=1
+            pers_movement += gravity
+            pers_rect.centery += pers_movement #перемещаем центр "прямоугольника" вместе с персом по оси y 
+            pers_rotated = pers_rotate(pers)
+            screen.blit(pers_rotated,pers_rect) 
+            game = crash(asteroid_list)
+            asteroid_list = move_asteroids(asteroid_list)
+            draw_asteroids(asteroid_list)
+            score += 0.005
+            score_sound_x -= 1
+            if score_sound_x <= 0:
+                score_sound.play()
+                score_sound_x = 200
+            dis_score('main_game')
+            star_moving() 
+        else:
+            best_score = score_update(score, best_score)
+            score_sound_x = 200
+            dis_score('game_over')
+            screen.blit(tutorial,tutorial_rect)   
+        x -= 1
+        moving()
+        if x <= -432:
+            x = 0 #обнуляем x когда он дойдет до конца экрана
+
+        pygame.display.update() #Обновление части экрана. В данном случае обновляет весь дисплей,т.к не передаем никакие аргументы
+        clock.tick(120) #Принимает количество кадров в секунду, т.е как быстро будет выполнять цикл
