@@ -1,4 +1,4 @@
-import unittest
+import unittest,pygame
 from main import score_update
 from main import move_asteroids
 class Test_Among (unittest.TestCase):
