@@ -101,7 +101,7 @@ angle = 0 #счетчик для вращения комет
 x = 0 # позиция для пола
 gravity = 0.125 #создаем гравитацию
 pers_movement = 0 #движение персонажа
-game = True #создаем переменную отвечающую за процесс игры, если она положительна - игра идет, если нет - конец игры
+game = False #создаем переменную отвечающую за процесс игры, если она положительна - игра идет, если нет - конец игры
 score = 0 #счет
 best_score = 0 #лучший счет
 screen = pygame.display.set_mode((432,768)) #Cоздание поверхности изображения, принимает длину и ширину экрана
@@ -145,7 +145,28 @@ if __name__ == '__main__':
             if event.type == pygame.QUIT: #выход из игры
                 pygame.quit()
                 sys.exit() #говорит интерпретатору остановить выполнение программы
+            
             if event.type == pygame.KEYDOWN: #проверяет была ли нажата кнопка на клавиатуре
+                if event.key == pygame.K_UP:
+                    pers_fire_1 = pygame.image.load('pers_fire_y.png').convert_alpha()
+                    pers_n_fire_1 = pygame.image.load('yellow.png').convert_alpha()
+                    pers_massive = [pers_fire_1,pers_n_fire_1]
+
+                if event.key == pygame.K_DOWN:
+                    pers_fire_1 = pygame.image.load('orange1.png').convert_alpha()
+                    pers_n_fire_1 = pygame.image.load('orange.png').convert_alpha()
+                    pers_massive = [pers_fire_1,pers_n_fire_1]
+
+                if event.key == pygame.K_RIGHT:
+                    pers_fire = pygame.image.load('pers_fire.png').convert_alpha()
+                    pers_n_fire = pygame.image.load('pers.png').convert_alpha()
+                    pers_massive = [pers_fire,pers_n_fire]
+
+                if event.key == pygame.K_LEFT:
+                    pers_fire_1 = pygame.image.load('white1.png').convert_alpha()
+                    pers_n_fire_1 = pygame.image.load('white.png').convert_alpha()
+                    pers_massive = [pers_fire_1,pers_n_fire_1]
+
                 if event.key == pygame.K_SPACE and game == True: #если нажали кнопку space вначале игры
                     pers_movement = 0
                     pers_movement -= 5
@@ -155,6 +176,7 @@ if __name__ == '__main__':
                         pers_index = 0
                     pers,pers_rect = pers_animation()
                 if event.key == pygame.K_SPACE and game == False: #если нажали пробел когда проиграли
+                    
                     game = True #игра начинается заново
                     asteroid_list.clear() #очищаем весь список астероидов
                     pers_movement = 0 #возвращаем 0 движению персонажа
