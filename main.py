@@ -28,6 +28,7 @@ def create_asteroid():
     new_asteroid = asteroid_draw.get_rect(center=(700,random_asteroid_pos)) #позиция x=700 чтобы игрок не видел как астероид резко появляется на глазах
     return new_asteroid
 
+
 def move_asteroids(asteroids):
     """ Функция для перемещения комет. Функция принимает список 
     комет, затем перебирает каждый объект, перемещая на 
@@ -161,7 +162,8 @@ if __name__ == '__main__':
                     score = 0
             if event.type == spawn:
                 asteroid_list.append(create_asteroid()) #добавляем в список кометы с помощью функции
-                
+
+
         screen.blit(back,(0,0))
         
         if game: #если игра идет то создаем персонажа и препяствия
