@@ -35,6 +35,3 @@ class Test_Among (unittest.TestCase):
         asteroid_list.append(asteroid_draw.get_rect(center=(100,0)))
         self.assertEqual (crash(asteroid_list), (False))
         
-        
-
-
